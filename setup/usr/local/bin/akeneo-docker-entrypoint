@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+if [ -f /var/www/html/bin/akeneo-bootstrap ]
+then
+    /var/www/html/bin/akeneo-bootstrap
+else
+    echo "[WARNING] Could not find akeneo-bootstrap script" 1>&2
+fi
+
+$@
