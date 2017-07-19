@@ -1,8 +1,17 @@
-# Apache + PHP for Akeneo
+# Supported tags and respective `Dockerfile` links
 
-Docker image running Apache with PHP configured for Akeneo (especially [netresearch/akeneo-app](https://hub.docker.com/r/netresearch/akeneo-app/)).
+- `latest` ([Dockerfile](https://github.com/netresearch/docker-akeneo-php/blob/master/Dockerfile))
+- `apache` ([apache/Dockerfile](https://github.com/netresearch/docker-akeneo-php/blob/master/apache/Dockerfile))
 
-## How to use this image
+# PHP + Apache images for Akeneo
+
+Docker images with PHP configured for Akeneo (especially [netresearch/akeneo-app](https://hub.docker.com/r/netresearch/akeneo-app/)).
+
+## PHP
+
+## Apache
+
+The Apache image is built on top of [php:5-apache](https://hub.docker.com/r/library/php/) and primarily meant for serving Akeneo
 
 ### Run
 

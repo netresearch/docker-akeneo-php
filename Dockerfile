@@ -1,38 +1,24 @@
-FROM php:5-apache
+FROM php:5
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends libicu-dev libmcrypt-dev libpng-dev libcurl3-dev libxml2-dev libjpeg-dev libpng-dev libssl-dev mysql-client \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-configure gd --enable-gd-native-ttf --with-jpeg-dir=/usr/lib/x86_64-linux-gnu --with-png-dir=/usr/lib/x86_64-linux-gnu \
-    && docker-php-ext-install mbstring pdo_mysql mysqli intl mcrypt gd exif curl soap zip opcache bcmath \
-    && pecl install -f mongo \
-    && pecl install apcu-4.0.11 \
-    && docker-php-ext-enable mongo apcu \
-    && apt-get autoremove \
-    && apt-get clean -y \
-    && rm -rf /tmp/* \
-    && rm -rf /var/tmp/* \
-    && for logs in `find /var/log -type f`; do > $logs; done \
-    && rm -rf /usr/share/locale/* \
-    && rm -rf /usr/share/man/* \
-    && rm -rf /usr/share/doc/* \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -f /var/cache/apt/*.bin
+RUN echo "memory_limit=-1" > "$PHP_INI_DIR/conf.d/memory-limit.ini" \
+ && echo "date.timezone=${PHP_TIMEZONE:-UTC}" > "$PHP_INI_DIR/conf.d/date_timezone.ini"
 
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
+COPY ./akeneo-php-* /usr/local/bin/
 
-COPY setup/ /
+RUN chmod +x /usr/local/bin/akeneo-php-*
 
-RUN a2enmod rewrite \
-    && a2ensite akeneo_pim \
-    && a2dissite 000-default.conf
+RUN akeneo-php-install-deps
 
-RUN chmod +x /usr/local/bin/akeneo-docker-entrypoint
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN akeneo-php-install-composer
 
+RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
-VOLUME /var/www/html
 
-ENTRYPOINT ["/usr/local/bin/akeneo-docker-entrypoint"]
+# This image most likely won't actually serve Akeneo
+# thus the entrypoint (which will bootstrap Akeneo)
+# doesn't make much sense here
+# However it's still in the image if you need it
+#ENTRYPOINT ["akeneo-php-entrypoint"]
 
-CMD ["apache2-foreground"]
+CMD ["php", "-a"]
