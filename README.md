@@ -11,7 +11,7 @@ Docker images with PHP built for Akeneo (especially [netresearch/akeneo-app](htt
 
 Given, you are using these images with [netresearch/akeneo-app](https://hub.docker.com/r/netresearch/akeneo-app/), you can or must set the environment variables for it on the container running this image (see the [docker-compose.yml](https://github.com/netresearch/docker-akeneo-php/blob/master/docker-compose.yml) for an example).
 
-There is **one additional environment variable** for the entrypoint (used by the Apache image but available to the PHP image as well): `AWAIT_AKENEO_INSTALLATION_DONE` - set this to `1` to make the entrypoint wait for the file  `./vendor/installation-done` in the current `WORKDIR` before proceeding (by default its `0`).
+There is **one additional environment variable** for the entrypoint (used by the Apache image but available to the PHP image as well): `AWAIT_AKENEO_BUILD_DONE` - set this to `1` to make the entrypoint wait for the file  `./vendor/akeneo-build-done` in the current `WORKDIR` before proceeding (by default its `0`).
 
 ## Shell commands
 
@@ -19,7 +19,7 @@ Both images provide following shell commands but not both invoke all of them:
 
 - `akeneo-php-entrypoint`
 
-    Entrypoint script which looks for the file `./bin/akeneo-bootstrap` and calls it when present before invoking the command. If the environment variable `AWAIT_AKENEO_INSTALLATION_DONE` is set to `1` it will wait for the file `./vendor/installation-done` to be present upfront.
+    Entrypoint script which looks for the file `./bin/akeneo-bootstrap` and calls it when present before invoking the command. If the environment variable `AWAIT_AKENEO_BUILD_DONE` is set to `1` it will wait for the file `./vendor/akeneo-build-done` to be present upfront.
     
     *Set as ENTRYPOINT on Apache image only*
      
