@@ -1,14 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-if [ $AWAIT_AKENEO_BUILD_DONE > 0 ]
-then
-    echo "Waiting for app installation to be ready"
-    while [ ! -f ./vendor/akeneo-build-done ]
-    do
-        sleep 1
-    done
-fi
+case "$AWAIT_AKENEO_BUILD_DONE" in
+    0|""|false|"false" ) ;;
+    * )
+        echo "Waiting for app installation to be ready"
+        while [ ! -f ./vendor/akeneo-build-done ]
+        do
+            sleep 1
+        done
+    ;;
+esac
 
 if [ -f ./bin/akeneo-bootstrap ]
 then
