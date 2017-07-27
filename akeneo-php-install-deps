@@ -1,8 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
+DEPS="libicu-dev libmcrypt-dev libpng-dev libcurl3-dev libxml2-dev libjpeg-dev libpng-dev libssl-dev mysql-client"
+if [ "$WITH_GIT" = "true" ] || [ "$WITH_GIT" = "1" ]; then
+  DEPS="$DEPS git ssh-client"
+fi
+
 apt-get update
-apt-get install -y --no-install-recommends libicu-dev libmcrypt-dev libpng-dev libcurl3-dev libxml2-dev libjpeg-dev libpng-dev libssl-dev mysql-client
+apt-get install -y --no-install-recommends $DEPS
 docker-php-ext-configure intl
 docker-php-ext-configure gd --enable-gd-native-ttf --with-jpeg-dir=/usr/lib/x86_64-linux-gnu --with-png-dir=/usr/lib/x86_64-linux-gnu
 docker-php-ext-install mbstring pdo_mysql mysqli intl mcrypt gd exif curl soap zip opcache bcmath

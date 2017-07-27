@@ -7,6 +7,7 @@ COPY ./akeneo-php-* /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/akeneo-php-*
 
+ARG WITH_GIT=true
 RUN akeneo-php-install-deps
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
