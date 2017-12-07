@@ -24,14 +24,14 @@ services:
       - "akeneo:/var/www/html"
       - "packages:/src/packages"
   mariadb:
-    image: "mariadb"
+    image: "mariadb:5.5"
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: "akeneo"
       MYSQL_USER: "akeneo"
       MYSQL_PASSWORD: "akeneo"
   mongo:
-    image: "mongo"
+    image: "mongo:2.6"
 
 volumes:
   akeneo:
